@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title data-i18n="meta.title">Campus de pádel a medida en Calella — HELLO PADEL</title>
+<meta name="description" data-i18n-content="meta.description" content="Configura tu campus de pádel en Calella (Barcelona) y consulta al momento un presupuesto orientativo por persona.">
+<meta name="theme-color" content="#0a0a0a">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<script type="module" src="js/app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#configurator" data-i18n="skip">Saltar al configurador</a>
+<div class="court-lines" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="HELLO PADEL — CAMPS">
+      <span class="h" aria-hidden="true">H</span>
+      <span>HELLO PADEL <span class="brand-sub">— Camps</span></span>
+    </a>
+    <div class="topbar-right">
+      <label class="sr-only" for="lang" data-i18n="lang.label">Idioma</label>
+      <select id="lang" class="lang-select"></select>
+      <a class="btn btn-primary btn-sm topbar-cta" href="#configurator" data-i18n="nav.cta">Configurar campus</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Campus a medida · Calella, Barcelona</p>
+      <h1 data-i18n="hero.title">Tu campus de pádel, hecho a medida.</h1>
+      <p class="lead" data-i18n="hero.lead"></p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#configurator" data-i18n="hero.cta">Configura tu campus</a>
+        <a class="btn btn-secondary" href="#how" data-i18n="hero.secondary">Cómo funciona</a>
+      </div>
+      <ul class="hero-strip">
+        <li><span class="strip-n">01</span><span data-i18n="hero.point1"></span></li>
+        <li><span class="strip-n">02</span><span data-i18n="hero.point2"></span></li>
+        <li><span class="strip-n">03</span><span data-i18n="hero.point3"></span></li>
+        <li><span class="strip-n">04</span><span data-i18n="hero.point4"></span></li>
+      </ul>
+      <!-- TODO: foto real del campus en Calella (sin personas identificables hasta tener autorización) -->
+    </div>
+  </section>
+
+  <!-- CONFIGURADOR -->
+  <section class="configurator" id="configurator" tabindex="-1">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow" data-i18n="config.eyebrow">Configurador</p>
+        <h2 data-i18n="config.title">Diseña tu campus en dos minutos</h2>
+        <p class="section-lead" data-i18n="config.lead"></p>
+      </header>
+
+      <div class="config-layout">
+        <form class="steps" id="config-form" novalidate>
+          <!-- 1 Jugadores -->
+          <fieldset class="step" id="step-players">
+            <legend><span class="step-n">01</span><span data-i18n="players.label">Jugadores</span></legend>
+            <p class="help" id="players-help" data-i18n="players.help"></p>
+            <div class="stepper" data-field="players">
+              <button type="button" class="stepper-btn" data-delta="-1" data-i18n-aria-label="players.dec">−</button>
+              <input type="number" id="players" inputmode="numeric" min="1" max="999" step="1" aria-describedby="players-help players-msg" data-i18n-aria-label="players.label">
+              <button type="button" class="stepper-btn" data-delta="1" data-i18n-aria-label="players.inc">+</button>
+            </div>
+            <div class="notice" id="players-msg" hidden></div>
+          </fieldset>
+
+          <!-- 2 Días -->
+          <fieldset class="step dependent" id="step-days">
+            <legend><span class="step-n">02</span><span data-i18n="days.label">Días de campus</span></legend>
+            <p class="help" id="days-help" data-i18n="days.help"></p>
+            <div class="stepper" data-field="days">
+              <button type="button" class="stepper-btn" data-delta="-1" data-i18n-aria-label="days.dec">−</button>
+              <input type="number" id="days" inputmode="numeric" step="1" aria-describedby="days-help" data-i18n-aria-label="days.label">
+              <button type="button" class="stepper-btn" data-delta="1" data-i18n-aria-label="days.inc">+</button>
+            </div>
+          </fieldset>
+
+          <!-- 3 Horas -->
+          <fieldset class="step dependent" id="step-hours">
+            <legend><span class="step-n">03</span><span data-i18n="hours.label">Horas de entreno por jugador y día</span></legend>
+            <p class="help" data-i18n="hours.help"></p>
+            <div class="pills" id="hours-options"></div>
+          </fieldset>
+
+          <!-- 4 Pistas -->
+          <fieldset class="step dependent" id="step-courts">
+            <legend><span class="step-n">04</span><span data-i18n="courts.label">Pistas</span></legend>
+            <p class="help" data-i18n="courts.help"></p>
+            <div class="pills pills-courts" id="courts-options"></div>
+            <p class="notice notice-info" id="courts-fixed" hidden></p>
+          </fieldset>
+
+          <!-- 5 Entrenadores -->
+          <fieldset class="step dependent" id="step-coaches">
+            <legend><span class="step-n">05</span><span data-i18n="coaches.label">Entrenadores</span></legend>
+            <p class="help" data-i18n="coaches.help"></p>
+            <div class="cards cards-2" id="coaches-options"></div>
+          </fieldset>
+
+          <!-- 6 Welcome pack -->
+          <fieldset class="step dependent" id="step-pack">
+            <legend><span class="step-n">06</span><span data-i18n="pack.label">Welcome pack</span></legend>
+            <p class="help" data-i18n="pack.help"></p>
+            <div class="cards cards-3" id="pack-options"></div>
+          </fieldset>
+
+          <!-- 7 Partidos -->
+          <fieldset class="step dependent" id="step-matches">
+            <legend><span class="step-n">07</span><span data-i18n="matches.label">Días con partido organizado</span></legend>
+            <p class="help" id="matches-help" data-i18n="matches.help"></p>
+            <div class="stepper" data-field="matchDays">
+              <button type="button" class="stepper-btn" data-delta="-1" data-i18n-aria-label="matches.dec">−</button>
+              <input type="number" id="matchDays" inputmode="numeric" min="0" step="1" aria-describedby="matches-help" data-i18n-aria-label="matches.label">
+              <button type="button" class="stepper-btn" data-delta="1" data-i18n-aria-label="matches.inc">+</button>
+            </div>
+          </fieldset>
+
+          <!-- 8 Física -->
+          <fieldset class="step dependent" id="step-physical">
+            <legend><span class="step-n">08</span><span data-i18n="physical.label">Días con preparación física</span></legend>
+            <p class="help" id="physical-help" data-i18n="physical.help"></p>
+            <div class="stepper" data-field="physicalDays">
+              <button type="button" class="stepper-btn" data-delta="-1" data-i18n-aria-label="physical.dec">−</button>
+              <input type="number" id="physicalDays" inputmode="numeric" min="0" step="1" aria-describedby="physical-help" data-i18n-aria-label="physical.label">
+              <button type="button" class="stepper-btn" data-delta="1" data-i18n-aria-label="physical.inc">+</button>
+            </div>
+          </fieldset>
+
+          <!-- 9 Datos -->
+          <fieldset class="step" id="step-contact">
+            <legend><span class="step-n">09</span><span data-i18n="contact.title">Tus datos</span></legend>
+            <p class="help" data-i18n="contact.help"></p>
+            <div class="form-grid">
+              <div class="field">
+                <label for="c-group" data-i18n="contact.group">Nombre del grupo o club *</label>
+                <input id="c-group" name="group" type="text" autocomplete="organization" required>
+              </div>
+              <div class="field">
+                <label for="c-person" data-i18n="contact.person">Persona de contacto *</label>
+                <input id="c-person" name="person" type="text" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <label for="c-email" data-i18n="contact.email">Email *</label>
+                <input id="c-email" name="email" type="email" autocomplete="email" required>
+              </div>
+              <div class="field">
+                <label for="c-phone" data-i18n="contact.phone">Teléfono</label>
+                <input id="c-phone" name="phone" type="tel" autocomplete="tel">
+              </div>
+              <div class="field field-wide">
+                <label for="c-dates" data-i18n="contact.dates">Fechas aproximadas</label>
+                <input id="c-dates" name="dates" type="text" data-i18n-placeholder="contact.datesPlaceholder">
+              </div>
+              <div class="field field-wide">
+                <label for="c-comments" data-i18n="contact.comments">Comentarios</label>
+                <textarea id="c-comments" name="comments" rows="3" data-i18n-placeholder="contact.commentsPlaceholder"></textarea>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+
+        <!-- RESUMEN -->
+        <aside class="summary" id="summary" aria-labelledby="summary-title">
+          <div class="summary-card">
+            <p class="eyebrow" id="summary-title" data-i18n="summary.eyebrow">Tu presupuesto</p>
+            <div id="summary-body"></div>
+            <p class="disclaimer" data-i18n="disclaimer"></p>
+            <div class="summary-actions">
+              <button type="button" class="btn btn-primary btn-block" data-action="request" data-i18n="cta.request">Solicitar este campus</button>
+              <button type="button" class="btn btn-secondary btn-block" data-action="pdf" data-i18n="cta.pdf">Descargar presupuesto (PDF)</button>
+            </div>
+            <p class="notice" id="request-msg" role="status" hidden></p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section class="light" id="how">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow eyebrow-dark" data-i18n="how.eyebrow">Cómo funciona tu campus</p>
+        <h2 data-i18n="how.title"></h2>
+        <p class="section-lead" data-i18n="how.lead"></p>
+      </header>
+      <ol class="rules">
+        <li class="rule"><span class="rule-n">01</span><div><h3 data-i18n="how.r1.title"></h3><p data-i18n="how.r1.text"></p></div></li>
+        <li class="rule"><span class="rule-n">02</span><div><h3 data-i18n="how.r2.title"></h3><p data-i18n="how.r2.text"></p></div></li>
+        <li class="rule"><span class="rule-n">03</span><div><h3 data-i18n="how.r3.title"></h3><p data-i18n="how.r3.text"></p></div></li>
+        <li class="rule"><span class="rule-n">04</span><div><h3 data-i18n="how.r4.title"></h3><p data-i18n="how.r4.text"></p></div></li>
+        <li class="rule"><span class="rule-n">05</span><div><h3 data-i18n="how.r5.title"></h3><p data-i18n="how.r5.text"></p></div></li>
+        <li class="rule"><span class="rule-n">06</span><div><h3 data-i18n="how.r6.title"></h3><p data-i18n="how.r6.text"></p></div></li>
+        <li class="rule"><span class="rule-n">07</span><div><h3 data-i18n="how.r7.title"></h3><p data-i18n="how.r7.text"></p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- QUÉ INCLUYE -->
+  <section class="included" id="included">
+    <div class="wrap">
+      <header class="section-head">
+        <p class="eyebrow" data-i18n="inc.eyebrow">Qué incluye</p>
+        <h2 data-i18n="inc.title"></h2>
+      </header>
+      <ul class="feature-grid">
+        <li class="feature"><span class="feature-n">01</span><h3 data-i18n="inc.i1.title"></h3><p data-i18n="inc.i1.text"></p></li>
+        <li class="feature"><span class="feature-n">02</span><h3 data-i18n="inc.i2.title"></h3><p data-i18n="inc.i2.text"></p></li>
+        <li class="feature"><span class="feature-n">03</span><h3 data-i18n="inc.i3.title"></h3><p data-i18n="inc.i3.text"></p></li>
+        <li class="feature"><span class="feature-n">04</span><h3 data-i18n="inc.i4.title"></h3><p data-i18n="inc.i4.text"></p></li>
+      </ul>
+      <!-- TODO: testimonios reales de grupos que hayan hecho el campus -->
+    </div>
+  </section>
+
+  <!-- AVISO + CTA FINAL -->
+  <section class="final">
+    <div class="wrap">
+      <p class="final-disclaimer" data-i18n="disclaimer"></p>
+      <h2 data-i18n="final.title"></h2>
+      <p class="section-lead" data-i18n="final.text"></p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#configurator" data-i18n="final.cta">Configurar mi campus</a>
+        <button type="button" class="btn btn-secondary" data-action="pdf" data-i18n="cta.pdf">Descargar presupuesto (PDF)</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span class="brand brand-sm"><span class="h" aria-hidden="true">H</span>HELLO PADEL <span class="brand-sub">— Camps</span></span>
+    <span class="footer-meta"><span id="footer-location"></span> · <a id="footer-email" href="#"></a></span>
+  </div>
+</footer>
+
+<!-- Barra fija móvil -->
+<div class="mobile-bar" id="mobile-bar" aria-hidden="true">
+  <div class="mobile-bar-price" id="mobile-bar-price"></div>
+  <a class="btn btn-primary btn-sm" href="#summary" data-i18n="summary.details" tabindex="-1">Ver detalle</a>
+</div>
+
+<!-- Anuncios para lectores de pantalla -->
+<div class="sr-only" aria-live="polite" aria-atomic="true" id="live"></div>
+
+<!-- Vista de impresión (PDF) -->
+<div id="print-sheet" aria-hidden="true"></div>
+</body>
+</html>

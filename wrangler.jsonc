@@ -1,0 +1,11 @@
+{
+  "name": "hello-padel-camps",
+  "compatibility_date": "2026-10-28",
+  "assets": {
+    "directory": "./"
+  },
+  // PENDIENTE: confirmar subdominio antes del primer deploy
+  "routes": [
+    { "pattern": "camps.hellopadelacademy.com", "custom_domain": true }
+  ]
+}
